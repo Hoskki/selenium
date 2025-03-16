@@ -1,11 +1,11 @@
 Feature: User Registration
 
-  Scenario: Successfully creating an account
+  Scenario: Successful registration
     Given User is on registration page
     When User enters valid details
     Then Account should be created successfully
 
-  Scenario: Creating an account without a last name
+  Scenario: Creating an account with missing last name
     Given User is on registration page
     When User omits last name
     Then Error message should be displayed for missing last name
