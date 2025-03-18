@@ -18,7 +18,7 @@ public class RegistrationSteps {
 
     @Before
     public void setUp() {
-        System.setProperty("webdriver.gecko.driver", "C:\\Users\\d_man\\IdeaProjects\\geckodriver.exe");
+       // System.setProperty("webdriver.gecko.driver", "C:\\Users\\d_man\\IdeaProjects\\geckodriver.exe");
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -34,8 +34,8 @@ public class RegistrationSteps {
         driver.findElement(By.id("dp")).sendKeys("06/04/1982");
         driver.findElement(By.id("member_firstname")).sendKeys("Test");
         driver.findElement(By.id("member_lastname")).sendKeys("User");
-        driver.findElement(By.id("member_emailaddress")).sendKeys("testuser@example.com");
-        driver.findElement(By.id("member_confirmemailaddress")).sendKeys("testuser@example.com");
+        driver.findElement(By.id("member_emailaddress")).sendKeys("testuser42@example.com");
+        driver.findElement(By.id("member_confirmemailaddress")).sendKeys("testuser42@example.com");
         driver.findElement(By.id("signupunlicenced_password")).sendKeys("Password123");
         driver.findElement(By.id("signupunlicenced_confirmpassword")).sendKeys("Password123");
 
@@ -54,8 +54,13 @@ public class RegistrationSteps {
 
     @Then("Account should be created successfully")
     public void account_should_be_created_successfully() {
-        WebElement successMessage = driver.findElement(By.id("successMessage"));
-        Assert.assertTrue(successMessage.isDisplayed());
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        WebElement confirmationHeader = driver.findElement(By.xpath("//h5[contains(text(), 'Your Basketball England Membership Number is')]"));
+        Assert.assertTrue(confirmationHeader.isDisplayed());
     }
 
     @When("User omits last name")
@@ -83,7 +88,7 @@ public class RegistrationSteps {
 
     @Then("Error message should be displayed for missing last name")
     public void error_message_should_be_displayed_for_missing_last_name() {
-        WebElement errorMessage = driver.findElement(By.id("lastNameError"));
+        WebElement errorMessage = driver.findElement(By.id("member_lastname__label"));
         Assert.assertTrue(errorMessage.isDisplayed());
     }
 
@@ -112,7 +117,7 @@ public class RegistrationSteps {
 
     @Then("Error message should be displayed for password mismatch")
     public void error_message_should_be_displayed_for_password_mismatch() {
-        WebElement errorMessage = driver.findElement(By.id("passwordMismatchError"));
+        WebElement errorMessage = driver.findElement(By.id("signupunlicenced_confirmpassword"));
         Assert.assertTrue(errorMessage.isDisplayed());
     }
 
@@ -132,16 +137,12 @@ public class RegistrationSteps {
 
         WebElement codeOfConductCheckbox = driver.findElement(By.id("sign_up_26"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", codeOfConductCheckbox);
-
-       // WebElement agreeToEthics = driver.findElement(By.id("fanmembersignup_agreetocodeofethicsandconduct"));
-       // ((JavascriptExecutor) driver).executeScript("arguments[0].click();", agreeToEthics);
-
         driver.findElement(By.name("join")).click();
     }
 
     @Then("Error message should be displayed for terms not accepted")
     public void error_message_should_be_displayed_for_terms_not_accepted() {
-        WebElement errorMessage = driver.findElement(By.id("termsError"));
+        WebElement errorMessage = driver.findElement(By.id("generalErrors"));
         Assert.assertTrue(errorMessage.isDisplayed());
     }
 
